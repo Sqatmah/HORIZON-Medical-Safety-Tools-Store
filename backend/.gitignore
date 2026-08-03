@@ -17,3 +17,9 @@ db.sqlite3
 .vscode/
 .idea/
 *.DS_Store
+
+
+# Frontend dependencies
+node_modules/
+dist/
+build/
