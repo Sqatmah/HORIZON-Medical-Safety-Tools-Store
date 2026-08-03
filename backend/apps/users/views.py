@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
 from .serializers import RegisterSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class RegisterView(APIView):
@@ -47,4 +48,20 @@ class VerifyOtpView(APIView):
         return Response({
             'access': str(refresh.access_token),
             'refresh': str(refresh),
+        })
+
+    
+
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'role': user.role,
+            'is_admin_role': user.is_admin_role,
         })

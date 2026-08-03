@@ -15,6 +15,7 @@ from apps.coupons.views import CouponViewSet
 from apps.shipping.views import ShippingZoneViewSet
 from apps.orders.views import OrderViewSet
 from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet
+from apps.users.views import RegisterView, VerifyOtpView, MeView
 
 router = DefaultRouter()
 router.register('categories', CategoryViewSet, basename='category')
@@ -39,6 +40,7 @@ urlpatterns = [
     path('api/auth/register/', RegisterView.as_view(), name='register'),
     path('api/auth/verify-otp/', VerifyOtpView.as_view(), name='verify_otp'),
     path('api/ai/', include('apps.ai_assistant.urls')),
+    path('api/auth/me/', MeView.as_view(), name='me'),
 ]
 
 if settings.DEBUG:

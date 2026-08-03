@@ -1,0 +1,51 @@
+import { Outlet, Link, useLocation } from 'react-router-dom';
+
+const menuItems = [
+  { path: '/admin', label: 'لوحة التحكم', exact: true },
+  { path: '/admin/products', label: 'المنتجات' },
+  { path: '/admin/categories', label: 'التصنيفات' },
+  { path: '/admin/orders', label: 'الطلبات' },
+];
+
+export default function AdminLayout() {
+  const location = useLocation();
+
+  return (
+    <div className="min-h-screen flex" dir="rtl">
+      {/* الشريط الجانبي */}
+      <aside className="w-64 bg-gray-900 text-gray-300 flex-shrink-0">
+        <div className="p-6 text-xl font-bold text-white border-b border-gray-800">
+          Horizon Care - إدارة
+        </div>
+        <nav className="p-4 space-y-1">
+          {menuItems.map((item) => {
+            const isActive = item.exact
+              ? location.pathname === item.path
+              : location.pathname.startsWith(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`block px-4 py-2 rounded-lg transition ${
+                  isActive ? 'bg-teal-600 text-white' : 'hover:bg-gray-800'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="p-4 border-t border-gray-800 mt-4">
+          <Link to="/" className="text-sm text-gray-400 hover:text-white">
+            ← الرجوع للمتجر
+          </Link>
+        </div>
+      </aside>
+
+      {/* المحتوى */}
+      <main className="flex-1 bg-gray-50 p-8 overflow-auto">
+        <Outlet />
+      </main>
+    </div>
+  );
+}
