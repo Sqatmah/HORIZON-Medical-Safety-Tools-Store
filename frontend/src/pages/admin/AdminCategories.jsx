@@ -54,6 +54,7 @@ export default function AdminCategories() {
       setShowForm(false);
       loadData();
     } catch (err) {
+      //console.log('تفاصيل الخطأ:', err.response?.data);
       setError('حدث خطأ، تأكد من صحة البيانات (يمكن الرابط مستخدم من قبل)');
     }
   };

@@ -25,7 +25,7 @@ export default function Cart() {
           <div key={item.product_id} className="bg-white rounded-lg shadow p-4 flex items-center gap-4">
             <div className="bg-gray-100 rounded w-20 h-20 flex-shrink-0 flex items-center justify-center overflow-hidden">
               {item.image ? (
-                <img src={`http://127.0.0.1:8000${item.image}`} alt={item.name_ar} className="w-full h-full object-cover" />
+                <img src={item.image} alt={item.name_ar} className="w-full h-full object-cover" />
               ) : (
                 <span className="text-gray-400 text-xs">لا توجد صورة</span>
               )}

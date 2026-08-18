@@ -60,3 +60,16 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name_en or f"Client {self.id}"
+
+
+
+class ContactMessage(models.Model):
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.created_at:%Y-%m-%d}"    

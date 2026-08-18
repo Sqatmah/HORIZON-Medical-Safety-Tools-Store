@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Banner, StaticPage, SiteSetting, Client
+from .models import Banner, StaticPage, SiteSetting, Client, ContactMessage
 
 
 @admin.register(Banner)
@@ -24,3 +24,10 @@ class SiteSettingAdmin(admin.ModelAdmin):
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['name_en', 'is_active', 'sort_order']
     list_editable = ['is_active', 'sort_order']
+
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ['full_name', 'email', 'phone', 'is_read', 'created_at']
+    list_editable = ['is_read']
+    list_filter = ['is_read']    

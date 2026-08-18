@@ -8,6 +8,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -17,10 +18,9 @@ export default function ProductDetail() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-
-
   useEffect(() => {
     setLoading(true);
+    setActiveImage(0);
     Product.get(id)
       .then(setProduct)
       .catch(console.error)
@@ -40,16 +40,34 @@ export default function ProductDetail() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* الصورة */}
-        <div className="bg-gray-100 rounded-xl h-96 flex items-center justify-center overflow-hidden">
-          {product.images && product.images.length > 0 ? (
-            <img
-              src={`http://127.0.0.1:8000${product.images[0].image}`}
-              alt={product.name_ar}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-gray-400">لا توجد صورة</span>
+        {/* معرض الصور */}
+        <div>
+          <div className="bg-gray-100 rounded-xl h-96 flex items-center justify-center overflow-hidden mb-3">
+            {product.images && product.images.length > 0 ? (
+              <img
+                src={product.images[activeImage].image}
+                alt={product.name_ar}
+                className="w-full h-full object-cover transition-opacity duration-300"
+              />
+            ) : (
+              <span className="text-gray-400">لا توجد صورة</span>
+            )}
+          </div>
+
+          {product.images && product.images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto">
+              {product.images.map((img, i) => (
+                <button
+                  key={img.id}
+                  onClick={() => setActiveImage(i)}
+                  className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition ${
+                    activeImage === i ? 'border-teal-500' : 'border-transparent opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img.image} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
@@ -119,12 +137,14 @@ export default function ProductDetail() {
             <div className="mt-8">
               <h2 className="text-lg font-bold mb-3">المواصفات</h2>
               <table className="w-full text-sm border-t">
-                {product.specs.map((spec, i) => (
-                  <tr key={i} className="border-b">
-                    <td className="py-2 text-gray-500">{spec.key_ar}</td>
-                    <td className="py-2 font-medium">{spec.value_ar}</td>
-                  </tr>
-                ))}
+                <tbody>
+                  {product.specs.map((spec, i) => (
+                    <tr key={i} className="border-b">
+                      <td className="py-2 text-gray-500">{spec.key_ar}</td>
+                      <td className="py-2 font-medium">{spec.value_ar}</td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           )}

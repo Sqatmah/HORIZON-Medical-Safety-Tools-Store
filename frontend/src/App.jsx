@@ -16,6 +16,14 @@ import Dashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminOrders from './pages/admin/AdminOrders';
+import CategoryPage from './pages/Category';
+import TrackOrder from './pages/TrackOrder';
+import StaticPageView from './pages/StaticPage';
+import Contact from './pages/Contact';
+
+
+
+
 
 function App() {
   return (
@@ -29,11 +37,13 @@ function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/category" element={<CategoryPage />} />
+              <Route path="/track-order" element={<TrackOrder />} />
+              <Route path="/page/contact" element={<Contact />} />
+              <Route path="/page/:slug" element={<StaticPageView />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/account" element={<Account />} />
-              <Route path="categories" element={<AdminCategories />} />
-              <Route path="orders" element={<AdminOrders />} />
             </Route>
 
             <Route
@@ -46,6 +56,8 @@ function App() {
             >
               <Route index element={<Dashboard />} />
               <Route path="products" element={<AdminProducts />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="orders" element={<AdminOrders />} />
             </Route>
           </Routes>
         </BrowserRouter>

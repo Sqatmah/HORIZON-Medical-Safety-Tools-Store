@@ -63,14 +63,14 @@ export default function Products() {
             <Link
               key={product.id}
               to={`/product/${product.id}`}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 block"
+              className="product-card bg-white rounded-xl shadow p-4 block"
             >
               <div className="bg-gray-100 rounded-lg h-40 mb-3 flex items-center justify-center overflow-hidden">
                 {product.images && product.images.length > 0 ? (
                   <img
-                    src={`http://127.0.0.1:8000${product.images[0].image}`}
+                    src={product.images[0].image}
                     alt={product.name_ar}
-                    className="w-full h-full object-cover"
+                    className="product-card-image w-full h-full object-cover"
                   />
                 ) : (
                   <span className="text-gray-400 text-sm">لا توجد صورة</span>

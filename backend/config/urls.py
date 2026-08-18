@@ -13,8 +13,8 @@ from apps.wishlist.views import WishlistViewSet
 from apps.addresses.views import AddressViewSet
 from apps.coupons.views import CouponViewSet
 from apps.shipping.views import ShippingZoneViewSet
-from apps.orders.views import OrderViewSet
-from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet
+from apps.orders.views import OrderViewSet, TrackOrderView
+from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet , ContactMessageViewSet
 from apps.users.views import RegisterView, VerifyOtpView, MeView
 
 router = DefaultRouter()
@@ -30,17 +30,19 @@ router.register('banners', BannerViewSet, basename='banner')
 router.register('pages', StaticPageViewSet, basename='page')
 router.register('settings', SiteSettingViewSet, basename='setting')
 router.register('clients', ClientViewSet, basename='client')
+router.register('contact-messages', ContactMessageViewSet, basename='contactmessage')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/orders/track/', TrackOrderView.as_view(), name='track-order'),
     path('api/', include(router.urls)),
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/auth/register/', RegisterView.as_view(), name='register'),
     path('api/auth/verify-otp/', VerifyOtpView.as_view(), name='verify_otp'),
-    path('api/ai/', include('apps.ai_assistant.urls')),
     path('api/auth/me/', MeView.as_view(), name='me'),
+    path('api/ai/', include('apps.ai_assistant.urls')),
 ]
 
 if settings.DEBUG:

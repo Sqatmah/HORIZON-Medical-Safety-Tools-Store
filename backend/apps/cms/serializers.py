@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Banner, StaticPage, SiteSetting, Client
+from .models import ContactMessage
 
 
 class BannerSerializer(serializers.ModelSerializer):
@@ -24,3 +25,13 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
+
+
+
+
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = '__all__'
+        read_only_fields = ['is_read']        

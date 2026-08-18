@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px 2px rgba(45, 212, 191, 0.5), 0 0 40px 6px rgba(45, 212, 191, 0.25);
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.06);
+}
+
+.product-card-image {
+  transition: transform 0.4s ease;
+}
+
+.category-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px 3px rgba(63, 199, 201, 0.5);
+}
+
+.category-card-image {
+  transition: transform 0.6s ease;
+}
+
+.category-card:hover .category-card-image {
+  transform: scale(1.08);
+}

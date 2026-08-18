@@ -1,6 +1,8 @@
 from rest_framework import viewsets, permissions
 from .models import Banner, StaticPage, SiteSetting, Client
-from .serializers import BannerSerializer, StaticPageSerializer, SiteSettingSerializer, ClientSerializer
+from .serializers import BannerSerializer, StaticPageSerializer, SiteSettingSerializer, ClientSerializer 
+from .models import ContactMessage
+from .serializers import ContactMessageSerializer
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -55,3 +57,14 @@ class ClientViewSet(viewsets.ModelViewSet):
         if not (user.is_authenticated and getattr(user, 'is_admin_role', False)):
             qs = qs.filter(is_active=True)
         return qs
+
+
+
+class ContactMessageViewSet(viewsets.ModelViewSet):
+    queryset = ContactMessage.objects.all()
+    serializer_class = ContactMessageSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [IsAdminOnly()]    
