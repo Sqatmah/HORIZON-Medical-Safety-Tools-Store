@@ -5,6 +5,9 @@ const menuItems = [
   { path: '/admin/products', label: 'المنتجات' },
   { path: '/admin/categories', label: 'التصنيفات' },
   { path: '/admin/orders', label: 'الطلبات' },
+  { path: '/admin/footer', label: 'إعدادات الفوتر' },
+  { path: '/admin/banners', label: 'البانرات' },
+  { path: '/admin/catalog', label: 'الكتالوج' },
 ];
 
 export default function AdminLayout() {
@@ -14,8 +17,8 @@ export default function AdminLayout() {
     <div className="min-h-screen flex" dir="rtl">
       {/* الشريط الجانبي */}
       <aside className="w-64 bg-gray-900 text-gray-300 flex-shrink-0">
-        <div className="p-6 text-xl font-bold text-white border-b border-gray-800">
-          Horizon Care - إدارة
+                <div className="p-6 text-xl font-bold text-white border-b border-gray-800">
+          Tech Innovation - إدارة
         </div>
         <nav className="p-4 space-y-1">
           {menuItems.map((item) => {

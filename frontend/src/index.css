@@ -1,12 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-primary: #1A4B4C;
+  --color-brand-primary-dark: #0F2E2F;
+  --color-brand-accent: #00A8CC;
+}
+
 .product-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 0 20px 2px rgba(45, 212, 191, 0.5), 0 0 40px 6px rgba(45, 212, 191, 0.25);
+  box-shadow: 0 0 20px 2px rgba(0, 168, 204, 0.5), 0 0 40px 6px rgba(0, 168, 204, 0.25);
 }
 
 .product-card:hover .product-card-image {
@@ -23,7 +29,7 @@
 
 .category-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 0 25px 3px rgba(63, 199, 201, 0.5);
+  box-shadow: 0 0 25px 3px rgba(0, 168, 204, 0.5);
 }
 
 .category-card-image {
@@ -32,4 +38,16 @@
 
 .category-card:hover .category-card-image {
   transform: scale(1.08);
+}
+
+
+
+.catalog-glow {
+  box-shadow: 0 0 15px 2px rgba(0, 168, 204, 0.4), 0 0 30px 4px rgba(0, 168, 204, 0.2);
+  animation: catalog-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes catalog-pulse {
+  0%, 100% { box-shadow: 0 0 15px 2px rgba(0, 168, 204, 0.4), 0 0 30px 4px rgba(0, 168, 204, 0.2); }
+  50% { box-shadow: 0 0 22px 4px rgba(0, 168, 204, 0.6), 0 0 45px 8px rgba(0, 168, 204, 0.3); }
 }

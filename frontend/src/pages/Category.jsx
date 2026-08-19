@@ -14,7 +14,7 @@ export default function CategoryPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-[#0B253D] mb-1">فئاتنا</h1>
+      <h1 className="text-3xl font-bold text-brand-primary mb-1">فئاتنا</h1>
       <p className="text-gray-500 mb-8">تصفح فئاتنا الرئيسية للمنتجات</p>
 
       {loading ? (
@@ -31,11 +31,11 @@ export default function CategoryPage() {
                 className="absolute inset-0 bg-cover bg-center category-card-image"
                 style={{
                   backgroundImage: cat.image
-                    ? `url(${cat.image})`
-                    : 'linear-gradient(135deg, #0B253D, #1D8FA0)',
+                                      ? `url(${cat.image})`
+                    : 'linear-gradient(135deg, #1A4B4C, #00A8CC)',
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0B253D]/90 via-[#0B253D]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/30 to-transparent" />
 
               <div className="absolute bottom-0 right-0 p-6 text-white text-right w-full">
                 <div className="flex items-center gap-2 justify-end mb-2">

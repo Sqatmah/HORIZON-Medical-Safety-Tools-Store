@@ -101,10 +101,16 @@ export default function AdminProducts() {
         setProductImages([]);
       }
       loadData();
-    } catch (err) {
-      const details = err.response?.data ? JSON.stringify(err.response.data, null, 2) : err.message;
-      setError('حدث خطأ: ' + details);
-      console.error('تفاصيل خطأ الحفظ:', details);
+        } catch (err) {
+      const data = err.response?.data;
+      if (data?.slug) {
+        setError('⚠️ هذا الرابط (Slug) مستخدم من قبل بمنتج آخر — غيّر الرابط يدويًا وحاول مجددًا');
+      } else if (data) {
+        setError('حدث خطأ: ' + JSON.stringify(data));
+      } else {
+        setError('حدث خطأ غير متوقع، حاول مرة أخرى');
+      }
+      console.error('تفاصيل خطأ الحفظ:', data);
     }
   };
 

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Product, Category } from '../api/entities';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +43,10 @@ export default function Products() {
         />
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+            setSearchParams(e.target.value ? { category: e.target.value } : {});
+          }}
           className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           <option value="">كل التصنيفات</option>

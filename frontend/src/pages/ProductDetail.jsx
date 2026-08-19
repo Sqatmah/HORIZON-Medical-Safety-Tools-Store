@@ -42,12 +42,12 @@ export default function ProductDetail() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* معرض الصور */}
         <div>
-          <div className="bg-gray-100 rounded-xl h-96 flex items-center justify-center overflow-hidden mb-3">
+          <div className="bg-gray-100 rounded-xl h-96 flex items-center justify-center overflow-hidden mb-3 group">
             {product.images && product.images.length > 0 ? (
               <img
                 src={product.images[activeImage].image}
                 alt={product.name_ar}
-                className="w-full h-full object-cover transition-opacity duration-300"
+                className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover:scale-110"
               />
             ) : (
               <span className="text-gray-400">لا توجد صورة</span>

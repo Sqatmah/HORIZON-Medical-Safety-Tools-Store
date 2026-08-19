@@ -1,9 +1,39 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import apiClient from '../api/client';
+import logo from '../assets/logo.png';
+
+const DEFAULT_FOOTER = {
+  about_text: 'مؤسسة الابتكار التقني هي مؤسسة متخصصة في توريد المعدات الطبية ومعدات السلامة المعتمدة في جميع أنحاء المملكة العربية السعودية.',
+  address: 'الرياض، المملكة العربية السعودية',
+  phone: '+966566586282',
+  email: 'info@techinnovation.sa',
+  working_hours: 'السبت-الخميس 8ص-10م',
+  facebook_url: '',
+  linkedin_url: '',
+  instagram_url: '',
+  twitter_url: '',
+  copyright_text: '© 2026 Tech Innovation. جميع الحقوق محفوظة.',
+};
 
 export default function Footer() {
+  const [footer, setFooter] = useState(DEFAULT_FOOTER);
+
+  useEffect(() => {
+    apiClient.get('/footer-settings/')
+      .then((res) => setFooter({ ...DEFAULT_FOOTER, ...res.data }))
+      .catch(() => setFooter(DEFAULT_FOOTER));
+  }, []);
+
+  const socialLinks = [
+    { label: 'Facebook', url: footer.facebook_url },
+    { label: 'LinkedIn', url: footer.linkedin_url },
+    { label: 'Instagram', url: footer.instagram_url },
+    { label: 'Twitter', url: footer.twitter_url },
+  ].filter((s) => s.url);
+
   return (
-    <footer className="bg-[#0B253D] text-gray-300 mt-16">
-      {/* النشرة الإخبارية */}
+    <footer className="bg-brand-primary text-gray-300 mt-16">
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-right">
@@ -23,17 +53,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* الأعمدة */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-10 text-right">
         <div>
           <div className="flex items-center gap-2 mb-4 justify-end">
-            <span className="font-bold text-white">HORIZON CARE</span>
-            <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-[#0B253D] text-xs font-bold">HC</div>
+            <img src={logo} alt="Tech Innovation" className="h-10 w-auto bg-white rounded-lg p-1" />
           </div>
-          <p className="text-sm leading-relaxed text-gray-400">
-            هورايزون كير هو قسم متخصص تابع لشركة هورايزون للحلول التقنية والأمنية، مكرسة لتوريد
-            المعدات الطبية ومعدات السلامة المعتمدة في جميع أنحاء المملكة العربية السعودية.
-          </p>
+          <p className="text-sm leading-relaxed text-gray-400">{footer.about_text}</p>
         </div>
 
         <div>
@@ -60,35 +85,37 @@ export default function Footer() {
           <h3 className="text-white font-bold mb-4">اتصل بنا</h3>
           <ul className="space-y-3 text-sm">
             <li className="flex items-center gap-2 justify-end">
-              <span>الرياض، المملكة العربية السعودية</span>
+              <span>{footer.address}</span>
               <span>📍</span>
             </li>
             <li className="flex items-center gap-2 justify-end">
-              <span dir="ltr">+966566586282</span>
+              <span dir="ltr">{footer.phone}</span>
               <span>📞</span>
             </li>
             <li className="flex items-center gap-2 justify-end">
-              <span>info@horizoncare.sa</span>
+              <span>{footer.email}</span>
               <span>✉️</span>
             </li>
             <li className="flex items-center gap-2 justify-end">
-              <span>السبت-الخميس 8ص-10م</span>
+              <span>{footer.working_hours}</span>
               <span>🕒</span>
             </li>
           </ul>
         </div>
       </div>
 
-      {/* شريط الحقوق */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-400">
-          <p>© 2026 Horizon Care. جميع الحقوق محفوظة.</p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-teal-400">Facebook</a>
-            <a href="#" className="hover:text-teal-400">LinkedIn</a>
-            <a href="#" className="hover:text-teal-400">Instagram</a>
-            <a href="#" className="hover:text-teal-400">Twitter</a>
-          </div>
+          <p>{footer.copyright_text}</p>
+          {socialLinks.length > 0 && (
+            <div className="flex gap-4">
+              {socialLinks.map((s) => (
+                <a key={s.label} href={s.url} target="_blank" rel="noreferrer" className="hover:text-teal-400">
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>

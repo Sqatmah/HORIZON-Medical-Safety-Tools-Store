@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
 from apps.users.views import RegisterView, VerifyOtpView
 from apps.categories.views import CategoryViewSet
 from apps.products.views import ProductViewSet
@@ -14,8 +13,13 @@ from apps.addresses.views import AddressViewSet
 from apps.coupons.views import CouponViewSet
 from apps.shipping.views import ShippingZoneViewSet
 from apps.orders.views import OrderViewSet, TrackOrderView
-from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet , ContactMessageViewSet
+from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet, ContactMessageViewSet, FooterSettingsView , CatalogView
 from apps.users.views import RegisterView, VerifyOtpView, MeView
+
+admin.site.site_header = "مؤسسة الابتكار التقني - لوحة الإدارة"
+admin.site.site_title = "Tech Innovation Admin"
+admin.site.index_title = "لوحة التحكم"
+
 
 router = DefaultRouter()
 router.register('categories', CategoryViewSet, basename='category')
@@ -36,6 +40,7 @@ router.register('contact-messages', ContactMessageViewSet, basename='contactmess
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/orders/track/', TrackOrderView.as_view(), name='track-order'),
+    path('api/footer-settings/', FooterSettingsView.as_view(), name='footer-settings'),
     path('api/', include(router.urls)),
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -43,6 +48,7 @@ urlpatterns = [
     path('api/auth/verify-otp/', VerifyOtpView.as_view(), name='verify_otp'),
     path('api/auth/me/', MeView.as_view(), name='me'),
     path('api/ai/', include('apps.ai_assistant.urls')),
+    path('api/catalog/', CatalogView.as_view(), name='catalog'),
 ]
 
 if settings.DEBUG:

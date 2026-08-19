@@ -16,10 +16,13 @@ import Dashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminFooterSettings from './pages/admin/AdminFooterSettings';
 import CategoryPage from './pages/Category';
 import TrackOrder from './pages/TrackOrder';
 import StaticPageView from './pages/StaticPage';
 import Contact from './pages/Contact';
+import AdminBanners from './pages/admin/AdminBanners';
+import AdminCatalog from './pages/admin/AdminCatalog';
 
 
 
@@ -44,6 +47,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/account" element={<Account />} />
+            
             </Route>
 
             <Route
@@ -58,6 +62,9 @@ function App() {
               <Route path="products" element={<AdminProducts />} />
               <Route path="categories" element={<AdminCategories />} />
               <Route path="orders" element={<AdminOrders />} />
+              <Route path="footer" element={<AdminFooterSettings />} />
+              <Route path="banners" element={<AdminBanners />} />
+              <Route path="catalog" element={<AdminCatalog />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -24,11 +24,24 @@ export default function Contact() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-[#0B253D] mb-10">اتصل بنا</h1>
+      <h1 className="text-3xl font-bold text-brand-primary mb-10">اتصل بنا</h1>
+
+      <a
+        href="https://wa.me/966566586282"
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#1DA851] transition shadow-lg mb-10"
+      >
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+          <path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.876.512 3.63 1.403 5.136L2 22l4.99-1.378A9.945 9.945 0 0012.001 22c5.522 0 10-4.477 10-10S17.523 2 12.001 2zm0 18.062a8.03 8.03 0 01-4.32-1.267l-.31-.185-3.211.887.86-3.15-.203-.323A8.028 8.028 0 013.938 12c0-4.454 3.61-8.062 8.063-8.062 4.453 0 8.062 3.608 8.062 8.062 0 4.454-3.61 8.062-8.062 8.062z" />
+        </svg>
+        تواصل معنا عبر واتساب
+      </a>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
-          <h2 className="text-xl font-bold text-[#0B253D] mb-6">معلومات الاتصال</h2>
+          <h2 className="text-xl font-bold text-brand-primary mb-6">معلومات الاتصال</h2>
           <div className="space-y-5">
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 bg-teal-50 rounded-full flex items-center justify-center flex-shrink-0">
@@ -50,7 +63,7 @@ export default function Contact() {
               </div>
               <div>
                 <p className="font-semibold text-gray-800">الهاتف</p>
-                <p className="text-gray-500 text-sm">+966 50 000 0000</p>
+                <p className="text-gray-500 text-sm">+966 56 658 6282</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -61,14 +74,14 @@ export default function Contact() {
               </div>
               <div>
                 <p className="font-semibold text-gray-800">البريد الإلكتروني</p>
-                <p className="text-gray-500 text-sm">info@horizoncare.sa</p>
+                <p className="text-gray-500 text-sm">info@techinnovation.sa</p>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-[#0B253D] mb-6">أرسل لنا رسالة</h2>
+          <h2 className="text-xl font-bold text-brand-primary mb-6">أرسل لنا رسالة</h2>
 
           {sent ? (
             <div className="bg-teal-50 text-teal-700 rounded-lg p-4">

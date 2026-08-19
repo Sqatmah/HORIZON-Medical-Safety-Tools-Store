@@ -73,3 +73,12 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.full_name} - {self.created_at:%Y-%m-%d}"    
+
+
+
+class Catalog(models.Model):
+    file = models.FileField(upload_to='catalog/')
+    uploaded_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Catalog - {self.uploaded_at:%Y-%m-%d}"    

@@ -1,8 +1,11 @@
 from rest_framework import viewsets, permissions
-from .models import Banner, StaticPage, SiteSetting, Client
-from .serializers import BannerSerializer, StaticPageSerializer, SiteSettingSerializer, ClientSerializer 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Banner, StaticPage, SiteSetting, Client , Catalog
+from .serializers import BannerSerializer, StaticPageSerializer, SiteSettingSerializer, ClientSerializer , CatalogSerializer
 from .models import ContactMessage
 from .serializers import ContactMessageSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -68,3 +71,71 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [permissions.AllowAny()]
         return [IsAdminOnly()]    
+
+
+
+
+FOOTER_SETTING_KEY = 'footer_content'
+
+DEFAULT_FOOTER = {
+    'about_text': 'مؤسسة الابتكار التقني هي مؤسسة متخصصة في توريد المعدات الطبية ومعدات السلامة المعتمدة في جميع أنحاء المملكة العربية السعودية.',
+    'address': 'الرياض، المملكة العربية السعودية',
+    'phone': '+966566586282',
+    'email': 'info@techinnovation.sa',
+    'working_hours': 'السبت-الخميس 8ص-10م',
+    'facebook_url': '',
+    'linkedin_url': '',
+    'instagram_url': '',
+    'twitter_url': '',
+    'copyright_text': '© 2026 Tech Innovation. جميع الحقوق محفوظة.',
+}
+
+
+class FooterSettingsView(APIView):
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminOnly()]
+
+    def get(self, request):
+        setting, _ = SiteSetting.objects.get_or_create(
+            key=FOOTER_SETTING_KEY,
+            defaults={'value_json': DEFAULT_FOOTER, 'group': 'footer'}
+        )
+        return Response(setting.value_json or DEFAULT_FOOTER)
+
+    def put(self, request):
+        setting, _ = SiteSetting.objects.get_or_create(
+            key=FOOTER_SETTING_KEY,
+            defaults={'group': 'footer'}
+        )
+        setting.value_json = request.data
+        setting.group = 'footer'
+        setting.save()
+        return Response(setting.value_json)
+
+
+
+class CatalogView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [IsAdminOnly()]
+
+    def get(self, request):
+        catalog = Catalog.objects.order_by('-uploaded_at').first()
+        if not catalog:
+            return Response({'file': None, 'uploaded_at': None})
+        return Response(CatalogSerializer(catalog).data)
+
+    def post(self, request):
+        file = request.FILES.get('file')
+        if not file:
+            return Response({'error': 'الملف مطلوب'}, status=400)
+
+        # احذف كل النسخ القديمة، نحتفظ بنسخة واحدة فقط دايمًا
+        Catalog.objects.all().delete()
+        catalog = Catalog.objects.create(file=file)
+        return Response(CatalogSerializer(catalog).data, status=201)    

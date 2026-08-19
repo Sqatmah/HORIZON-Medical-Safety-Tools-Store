@@ -158,3 +158,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'  # كافي للتطوير المحلي بدون Redis
     }
 }
+
+
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20 ميجا
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024

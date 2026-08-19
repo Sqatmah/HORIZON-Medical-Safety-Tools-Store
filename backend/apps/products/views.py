@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ProductImageSerializer
+from django.db import models
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -15,6 +16,26 @@ class ProductViewSet(viewsets.ModelViewSet):
         user = self.request.user
         if not (user.is_authenticated and getattr(user, 'is_admin_role', False)):
             qs = qs.filter(status='published')
+
+        params = self.request.query_params
+
+        category = params.get('category')
+        if category:
+            qs = qs.filter(category_id=category)
+
+        for bool_field in ['is_featured', 'is_best_seller', 'is_new_arrival']:
+            value = params.get(bool_field)
+            if value is not None:
+                qs = qs.filter(**{bool_field: value.lower() == 'true'})
+
+        search = params.get('search')
+        if search:
+            qs = qs.filter(
+                models.Q(name_ar__icontains=search) |
+                models.Q(name_en__icontains=search) |
+                models.Q(sku__icontains=search)
+            )
+
         return qs
 
     def perform_create(self, serializer):

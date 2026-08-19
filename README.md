@@ -47,6 +47,13 @@ Tech Innovation is a bilingual (Arabic/English) platform compliant with SFDA and
 ### Product Details
 ![Product Detail](docs/screenshots/product-detail.png)
 
+### Tracking Order
+![Product Detail](docs/screenshots/TrackingOrder.png)
+
+### Orders Checkout
+![Product Detail](docs/screenshots/OrdersCheckout.png)
+
+
 ## 🚀 Local Setup
 
 ### Backend

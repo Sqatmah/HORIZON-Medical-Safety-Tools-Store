@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.png';
 
 export default function Header() {
   const { totalItems } = useCart();
@@ -15,13 +16,8 @@ export default function Header() {
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-6">
-        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-9 h-9 bg-[#0B253D] rounded-lg flex items-center justify-center text-white text-sm font-bold">
-            HC
-          </div>
-          <span className="font-bold text-[#0B253D] leading-tight text-sm">
-            HORIZON<br />CARE
-          </span>
+                <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+          <img src={logo} alt="Tech Innovation" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex gap-6 text-gray-700 text-sm whitespace-nowrap">

@@ -45,7 +45,7 @@ export default function TrackOrder() {
         </svg>
       </div>
 
-      <h1 className="text-3xl font-bold text-[#0B253D] mb-2">تتبع طلبك</h1>
+      <h1 className="text-3xl font-bold text-brand-primary mb-2">تتبع طلبك</h1>
       <p className="text-gray-500 mb-8">أدخل رقم طلبك أو رقم التتبع لمعرفة حالة الشحن المباشرة</p>
 
       <form onSubmit={handleSearch} className="flex gap-3 mb-12">
