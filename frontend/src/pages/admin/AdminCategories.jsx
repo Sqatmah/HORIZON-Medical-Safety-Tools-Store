@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import apiClient from '../../api/client';
 
-const emptyForm = { name_en: '', name_ar: '', slug: '', is_active: true, sort_order: 0 };
+const emptyForm = { name_en: '', name_ar: '', slug: '', description_ar: '', is_active: true, sort_order: 0 };
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
@@ -10,6 +10,7 @@ export default function AdminCategories() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
+    const [imageFile, setImageFile] = useState(null);
 
   const loadData = () => {
     setLoading(true);
@@ -24,6 +25,7 @@ export default function AdminCategories() {
 
   const openNewForm = () => {
     setForm(emptyForm);
+    setImageFile(null);
     setEditingId(null);
     setShowForm(true);
   };
@@ -31,8 +33,10 @@ export default function AdminCategories() {
   const openEditForm = (cat) => {
     setForm({
       name_en: cat.name_en, name_ar: cat.name_ar, slug: cat.slug,
+      description_ar: cat.description_ar || '',
       is_active: cat.is_active, sort_order: cat.sort_order,
     });
+    setImageFile(null);
     setEditingId(cat.id);
     setShowForm(true);
   };
@@ -42,19 +46,23 @@ export default function AdminCategories() {
     setForm({ ...form, name_en: value, slug });
   };
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    const data = new FormData();
+    Object.entries(form).forEach(([key, value]) => data.append(key, value));
+    if (imageFile) data.append('image', imageFile);
+
     try {
       if (editingId) {
-        await apiClient.patch(`/categories/${editingId}/`, form);
+        await apiClient.patch(`/categories/${editingId}/`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
-        await apiClient.post('/categories/', form);
+        await apiClient.post('/categories/', data, { headers: { 'Content-Type': 'multipart/form-data' } });
       }
       setShowForm(false);
       loadData();
     } catch (err) {
-      //console.log('تفاصيل الخطأ:', err.response?.data);
       setError('حدث خطأ، تأكد من صحة البيانات (يمكن الرابط مستخدم من قبل)');
     }
   };
@@ -171,6 +179,24 @@ export default function AdminCategories() {
                 />
               </div>
               <label className="flex items-center gap-2 text-sm text-gray-600">
+                              <div>
+                <label className="block text-sm text-gray-600 mb-1">وصف قصير (يظهر بالكارد)</label>
+                <textarea
+                  value={form.description_ar}
+                  onChange={(e) => setForm({ ...form, description_ar: e.target.value })}
+                  rows={2}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">صورة التصنيف</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files[0])}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </div>
                 <input
                   type="checkbox"
                   checked={form.is_active}

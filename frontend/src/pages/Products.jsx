@@ -7,8 +7,9 @@ export default function Products() {
   const [categories, setCategories] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [loading, setLoading] = useState(true);
+  const [ordering, setOrdering] = useState('');
 
   // جيب التصنيفات مرة وحدة بس عند فتح الصفحة
   useEffect(() => {
@@ -21,18 +22,19 @@ export default function Products() {
     const params = {};
     if (selectedCategory) params.category = selectedCategory;
     if (search) params.search = search;
+    if (ordering) params.ordering = ordering;
 
     Product.list(params)
       .then(setProducts)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [selectedCategory, search]);
+  }, [selectedCategory, search, ordering]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">جميع المنتجات</h1>
 
-      {/* شريط البحث والفلترة */}
+       {/* شريط البحث والفلترة */}
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <input
           type="text"
@@ -53,6 +55,15 @@ export default function Products() {
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>{cat.name_ar}</option>
           ))}
+        </select>
+        <select
+          value={ordering}
+          onChange={(e) => setOrdering(e.target.value)}
+          className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+        >
+          <option value="">الترتيب الافتراضي</option>
+          <option value="price">السعر: من الأرخص للأغلى</option>
+          <option value="-price">السعر: من الأغلى للأرخص</option>
         </select>
       </div>
 

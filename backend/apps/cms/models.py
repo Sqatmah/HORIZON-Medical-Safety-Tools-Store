@@ -6,7 +6,7 @@ class Banner(models.Model):
     title_ar = models.CharField(max_length=255)
     subtitle_en = models.CharField(max_length=255, blank=True)
     subtitle_ar = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(upload_to='banners/')
+    image = models.ImageField(upload_to='banners/', blank=True, null=True)
     link = models.URLField(blank=True)
     sort_order = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)

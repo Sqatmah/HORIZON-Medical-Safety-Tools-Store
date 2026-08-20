@@ -2,11 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.png';
+import SearchBar from './SearchBar';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from '../lib/translations';
 
 export default function Header() {
   const { totalItems } = useCart();
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = useTranslation(language);
 
   const handleLogout = () => {
     logout();
@@ -21,25 +26,16 @@ export default function Header() {
         </Link>
 
         <nav className="hidden lg:flex gap-6 text-gray-700 text-sm whitespace-nowrap">
-          <Link to="/" className="hover:text-teal-600">الرئيسية</Link>
-          <Link to="/products" className="hover:text-teal-600">المنتجات</Link>
-          <Link to="/category" className="hover:text-teal-600">الفئات</Link>
-          <Link to="/track-order" className="hover:text-teal-600">تتبع طلبك</Link>
-          <Link to="/page/about" className="hover:text-teal-600">من نحن</Link>
-          <Link to="/page/contact" className="hover:text-teal-600">اتصل بنا</Link>
+          <Link to="/" className="hover:text-teal-600">{t('home')}</Link>
+          <Link to="/products" className="hover:text-teal-600">{t('products')}</Link>
+          <Link to="/category" className="hover:text-teal-600">{t('categories')}</Link>
+          <Link to="/track-order" className="hover:text-teal-600">{t('trackOrder')}</Link>
+          <Link to="/page/about" className="hover:text-teal-600">{t('aboutUs')}</Link>
+          <Link to="/page/contact" className="hover:text-teal-600">{t('contactUs')}</Link>
         </nav>
 
         <div className="flex-1 max-w-md">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="ابحث عن المنتجات..."
-              className="w-full border rounded-full px-4 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-            <svg className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-            </svg>
-          </div>
+          <SearchBar />
         </div>
 
         <div className="flex gap-4 items-center flex-shrink-0">
@@ -57,11 +53,11 @@ export default function Header() {
                 </svg>
               </button>
               <div className="absolute left-0 top-full w-40 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block text-sm">
-                {user?.is_admin_role && (
-                  <Link to="/admin" className="block px-4 py-2 text-teal-700 font-semibold hover:bg-gray-50">لوحة التحكم</Link>
+                                {user?.is_admin_role && (
+                  <Link to="/admin" className="block px-4 py-2 text-teal-700 font-semibold hover:bg-gray-50">{t('adminDashboard')}</Link>
                 )}
-                <Link to="/account" className="block px-4 py-2 hover:bg-gray-50">حسابي</Link>
-                <button onClick={handleLogout} className="block w-full text-right px-4 py-2 text-red-500 hover:bg-gray-50">خروج</button>
+                <Link to="/account" className="block px-4 py-2 hover:bg-gray-50">{t('myAccount')}</Link>
+                <button onClick={handleLogout} className="block w-full text-right px-4 py-2 text-red-500 hover:bg-gray-50">{t('logout')}</button>
               </div>
             </div>
           ) : (

@@ -20,34 +20,31 @@ export default function CategoryPage() {
       {loading ? (
         <p className="text-gray-500">جاري التحميل...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {categories.map((cat) => (
             <Link
               key={cat.id}
               to={`/products?category=${cat.id}`}
-              className="category-card relative rounded-2xl overflow-hidden h-80 block group"
+              className="category-card-glow relative rounded-2xl overflow-hidden h-96 block group"
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center category-card-image"
-                style={{
-                  backgroundImage: cat.image
-                                      ? `url(${cat.image})`
-                    : 'linear-gradient(135deg, #1A4B4C, #00A8CC)',
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary to-brand-accent" />
+              {cat.image && (
+                <img
+                  src={cat.image}
+                  alt={cat.name_ar}
+                  className="absolute inset-0 w-full h-full object-cover category-card-image blur-[1px] group-hover:blur-0 transition-all duration-500"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/85 via-brand-primary/20 to-transparent" />
 
-              <div className="absolute bottom-0 right-0 p-6 text-white text-right w-full">
-                <div className="flex items-center gap-2 justify-end mb-2">
-                  <h3 className="text-2xl font-bold">{cat.name_ar}</h3>
-                  {cat.icon && <span className="text-2xl">{cat.icon}</span>}
-                </div>
+              <div className="absolute bottom-0 right-0 p-7 text-white text-right w-full">
+                <h3 className="text-2xl font-bold mb-2">{cat.name_ar}</h3>
                 {cat.description_ar && (
-                  <p className="text-gray-200 text-sm mb-3">{cat.description_ar}</p>
+                  <p className="text-gray-200 text-sm mb-4">{cat.description_ar}</p>
                 )}
-                <span className="inline-flex items-center gap-1 text-cyan-300 text-sm font-semibold">
+                <span className="inline-flex items-center gap-1 text-brand-accent text-xs font-semibold">
                   تسوق الآن
-                  <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
                 </span>

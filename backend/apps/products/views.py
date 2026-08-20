@@ -2,9 +2,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
+from django.db import models
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ProductImageSerializer
-from django.db import models
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -33,8 +33,16 @@ class ProductViewSet(viewsets.ModelViewSet):
             qs = qs.filter(
                 models.Q(name_ar__icontains=search) |
                 models.Q(name_en__icontains=search) |
-                models.Q(sku__icontains=search)
+                models.Q(sku__icontains=search) |
+                models.Q(desc_ar__icontains=search) |
+                models.Q(desc_en__icontains=search) |
+                models.Q(short_desc_ar__icontains=search) |
+                models.Q(short_desc_en__icontains=search)
             )
+
+        ordering = params.get('ordering')
+        if ordering in ['price', '-price']:
+            qs = qs.order_by(ordering)
 
         return qs
 

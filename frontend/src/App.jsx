@@ -23,6 +23,7 @@ import StaticPageView from './pages/StaticPage';
 import Contact from './pages/Contact';
 import AdminBanners from './pages/admin/AdminBanners';
 import AdminCatalog from './pages/admin/AdminCatalog';
+import { LanguageProvider } from './context/LanguageContext';
 
 
 
@@ -30,7 +31,8 @@ import AdminCatalog from './pages/admin/AdminCatalog';
 
 function App() {
   return (
-    <AuthProvider>
+    <LanguageProvider>
+     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
           <Routes>
@@ -70,6 +72,7 @@ function App() {
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
+    </LanguageProvider>
   );
 }
 
