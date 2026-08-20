@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Product, Category } from '../api/entities';
+import StarRating from '../components/StarRating';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -92,7 +93,14 @@ export default function Products() {
                 )}
               </div>
               <h2 className="font-semibold text-gray-800 truncate">{product.name_ar}</h2>
-              <p className="text-gray-400 text-xs truncate">{product.name_en}</p>
+              {product.rating_avg > 0 && (
+                <div className="flex items-center gap-1 mt-1">
+                  <StarRating rating={product.rating_avg} size="text-xs" />
+                  {product.quantity_sold > 0 && (
+                    <span className="text-gray-400 text-xs">({product.quantity_sold})</span>
+                  )}
+                </div>
+              )}
               <p className="text-teal-600 font-bold mt-2">{product.price} ريال</p>
             </Link>
           ))}

@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Banner, StaticPage, SiteSetting, Client , Catalog
 from .serializers import BannerSerializer, StaticPageSerializer, SiteSettingSerializer, ClientSerializer , CatalogSerializer
-from .models import ContactMessage
+from .models import ContactMessage,PageVisit
 from .serializers import ContactMessageSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
+from datetime import timedelta
+from django.utils import timezone
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -140,3 +142,29 @@ class CatalogView(APIView):
         Catalog.objects.all().delete()
         catalog = Catalog.objects.create(file=file)
         return Response(CatalogSerializer(catalog).data, status=201)    
+
+
+
+class TrackVisitView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        path = request.data.get('path', '/')
+        session_key = request.data.get('session_id', '')
+        PageVisit.objects.create(path=path, session_key=session_key)
+        return Response({'ok': True})
+
+
+class VisitorStatsView(APIView):
+    permission_classes = [IsAdminOnly]
+
+    def get(self, request):
+        now = timezone.now()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        return Response({
+            'visits_today': PageVisit.objects.filter(visited_at__gte=today_start).count(),
+            'unique_sessions_today': PageVisit.objects.filter(visited_at__gte=today_start).values('session_key').distinct().count(),
+            'visits_last_7_days': PageVisit.objects.filter(visited_at__gte=now - timedelta(days=7)).count(),
+            'visits_total': PageVisit.objects.count(),
+        })

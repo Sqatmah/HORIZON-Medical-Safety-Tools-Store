@@ -82,3 +82,13 @@ class Catalog(models.Model):
 
     def __str__(self):
         return f"Catalog - {self.uploaded_at:%Y-%m-%d}"    
+
+
+
+class PageVisit(models.Model):
+    path = models.CharField(max_length=255)
+    visited_at = models.DateTimeField(auto_now_add=True)
+    session_key = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        indexes = [models.Index(fields=['visited_at'])]

@@ -4,6 +4,7 @@ import { Product, Category } from '../api/entities';
 import apiClient from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { useTranslation } from '../lib/translations';
+import StarRating from '../components/StarRating';
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
@@ -67,8 +68,13 @@ export default function Home() {
         <span className="text-gray-400 text-xs">لا توجد صورة</span>
       )}
     </div>
-    <h3 className="font-semibold text-gray-800 truncate">{product.name_ar}</h3>
-    <p className="text-teal-600 font-bold mt-1">{product.price} ريال</p>
+      <h3 className="font-semibold text-gray-800 truncate">{product.name_ar}</h3>
+      {product.rating_avg > 0 && (
+        <div className="mt-1">
+          <StarRating rating={product.rating_avg} size="text-xs" />
+        </div>
+      )}
+      <p className="text-teal-600 font-bold mt-1">{product.price} ريال</p>
   </Link>
 );
 

@@ -13,9 +13,11 @@ from apps.addresses.views import AddressViewSet
 from apps.coupons.views import CouponViewSet
 from apps.shipping.views import ShippingZoneViewSet
 from apps.orders.views import OrderViewSet, TrackOrderView
-from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet, ContactMessageViewSet, FooterSettingsView , CatalogView
+from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet, ContactMessageViewSet, FooterSettingsView , CatalogView,TrackVisitView, VisitorStatsView
 from apps.users.views import RegisterView, VerifyOtpView, MeView
 from apps.users.views import RegisterView, VerifyOtpView, MeView, UserManagementViewSet
+from apps.orders.reports import SalesReportView, ProductsReportView, CustomersReportView, OrdersReportView
+from apps.orders.excel_export import ExportExcelView
 
 
 
@@ -53,6 +55,13 @@ urlpatterns = [
     path('api/auth/me/', MeView.as_view(), name='me'),
     path('api/ai/', include('apps.ai_assistant.urls')),
     path('api/catalog/', CatalogView.as_view(), name='catalog'),
+    path('api/reports/sales/', SalesReportView.as_view(), name='report-sales'),
+    path('api/reports/products/', ProductsReportView.as_view(), name='report-products'),
+    path('api/reports/customers/', CustomersReportView.as_view(), name='report-customers'),
+    path('api/reports/orders/', OrdersReportView.as_view(), name='report-orders'),
+    path('api/reports/export/<str:report_type>/', ExportExcelView.as_view(), name='report-export'),
+    path('api/track-visit/', TrackVisitView.as_view(), name='track-visit'),
+    path('api/visitor-stats/', VisitorStatsView.as_view(), name='visitor-stats'),
 ]
 
 if settings.DEBUG:

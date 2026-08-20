@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Product } from '../api/entities';
 import { useCart } from '../context/CartContext';
+import StarRating from '../components/StarRating';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -73,8 +74,22 @@ export default function ProductDetail() {
 
         {/* التفاصيل */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">{product.name_ar}</h1>
-          <p className="text-gray-400 mb-4">{product.name_en}</p>
+                    <h1 className="text-3xl font-bold text-gray-800">{product.name_ar}</h1>
+          <p className="text-gray-400 mb-2">{product.name_en}</p>
+
+          {(product.rating_avg > 0 || product.quantity_sold > 0) && (
+            <div className="flex items-center gap-3 mb-4 text-sm">
+              {product.rating_avg > 0 && (
+                <div className="flex items-center gap-1">
+                  <StarRating rating={product.rating_avg} />
+                  <span className="text-gray-500">({product.rating_avg})</span>
+                </div>
+              )}
+              {product.quantity_sold > 0 && (
+                <span className="text-gray-500">· {product.quantity_sold} عملية شراء</span>
+              )}
+            </div>
+          )}
 
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl font-bold text-teal-600">{displayPrice} ريال</span>

@@ -7,7 +7,7 @@ const emptyForm = {
   price: '', discount_price: '', sku: '', stock: 0, low_stock_threshold: 5,
   category: '', brand: '', video_url: '', status: 'draft',
   sfda_number: '', country_of_origin: '', warranty_en: '', warranty_ar: '',
-  compliance_standard: '', tags: '',
+  compliance_standard: '', tags: '', rating_avg: 0, quantity_sold: 0,
 };
 
 const emptySpec = { key_en: '', key_ar: '', value_en: '', value_ar: '' };
@@ -47,7 +47,7 @@ export default function AdminProducts() {
     setShowForm(true);
   };
 
-  const openEditForm = (product) => {
+    const openEditForm = (product) => {
     setForm({
       name_en: product.name_en, name_ar: product.name_ar, slug: product.slug,
       short_desc_en: product.short_desc_en || '', short_desc_ar: product.short_desc_ar || '',
@@ -60,7 +60,11 @@ export default function AdminProducts() {
       warranty_en: product.warranty_en || '', warranty_ar: product.warranty_ar || '',
       compliance_standard: product.compliance_standard || '',
       tags: (product.tags || []).join(', '),
+      rating_avg: product.rating_avg || 0,
+      quantity_sold: product.quantity_sold || 0,
     });
+
+
     setSpecs(product.specs && product.specs.length > 0 ? product.specs : []);
     setProductImages(product.images || []);
     setEditingId(product.id);
@@ -325,6 +329,43 @@ export default function AdminProducts() {
 
               <div className="border rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
+                                <div className="border rounded-lg p-4">
+                <h3 className="font-semibold mb-3 text-gray-700">التقييم والمبيعات (تحكم يدوي)</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">التقييم (من 5)</label>
+                    <select
+                      value={form.rating_avg}
+                      onChange={(e) => setForm({ ...form, rating_avg: e.target.value })}
+                      className="w-full border rounded-lg px-3 py-2"
+                    >
+                      <option value="0">بدون تقييم</option>
+                      <option value="1">⭐ (1)</option>
+                      <option value="1.5">⭐ 1.5</option>
+                      <option value="2">⭐⭐ (2)</option>
+                      <option value="2.5">⭐⭐ 2.5</option>
+                      <option value="3">⭐⭐⭐ (3)</option>
+                      <option value="3.5">⭐⭐⭐ 3.5</option>
+                      <option value="4">⭐⭐⭐⭐ (4)</option>
+                      <option value="4.5">⭐⭐⭐⭐ 4.5</option>
+                      <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm text-gray-600 mb-1">عدد المشترين</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={form.quantity_sold}
+                      onChange={(e) => setForm({ ...form, quantity_sold: e.target.value })}
+                      className="w-full border rounded-lg px-3 py-2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+
                   <h3 className="font-semibold text-gray-700">المواصفات التفصيلية</h3>
                   <button type="button" onClick={addSpec} className="text-teal-600 text-sm hover:underline">+ إضافة مواصفة</button>
                 </div>
