@@ -17,3 +17,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             phone=validated_data.get('phone', ''),
         )
         return user
+
+
+class UserManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'phone', 'role', 'customer_type', 'date_joined', 'is_active']
+        read_only_fields = ['username', 'email', 'date_joined']    

@@ -3,10 +3,12 @@ from django.core.mail import send_mail
 from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
-from .serializers import RegisterSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import viewsets
+from .models import User
+from .serializers import RegisterSerializer, UserManagementSerializer
+from apps.core.permissions import IsSuperAdminOnly
 
 
 class RegisterView(APIView):
@@ -63,5 +65,14 @@ class MeView(APIView):
             'username': user.username,
             'email': user.email,
             'role': user.role,
+            'customer_type': user.customer_type,
             'is_admin_role': user.is_admin_role,
+            'is_super_admin_role': user.is_super_admin_role,
         })
+
+
+class UserManagementViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserManagementSerializer
+    permission_classes = [IsSuperAdminOnly]
+    http_method_names = ['get', 'patch', 'head', 'options']    

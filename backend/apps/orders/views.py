@@ -7,19 +7,21 @@ from .models import Order
 from .serializers import OrderSerializer
 
 
-class IsOwnerReadOnlyOrAdminFull(permissions.BasePermission):
+class OrderPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return obj.user == request.user or getattr(request.user, 'is_admin_role', False)
+        if request.method == 'DELETE':
+            return getattr(request.user, 'is_super_admin_role', False)
         return getattr(request.user, 'is_admin_role', False)
 
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    permission_classes = [IsOwnerReadOnlyOrAdminFull]
+    permission_classes = [OrderPermission]
 
     def get_queryset(self):
         user = self.request.user

@@ -15,6 +15,9 @@ from apps.shipping.views import ShippingZoneViewSet
 from apps.orders.views import OrderViewSet, TrackOrderView
 from apps.cms.views import BannerViewSet, StaticPageViewSet, SiteSettingViewSet, ClientViewSet, ContactMessageViewSet, FooterSettingsView , CatalogView
 from apps.users.views import RegisterView, VerifyOtpView, MeView
+from apps.users.views import RegisterView, VerifyOtpView, MeView, UserManagementViewSet
+
+
 
 admin.site.site_header = "مؤسسة الابتكار التقني - لوحة الإدارة"
 admin.site.site_title = "Tech Innovation Admin"
@@ -35,6 +38,7 @@ router.register('pages', StaticPageViewSet, basename='page')
 router.register('settings', SiteSettingViewSet, basename='setting')
 router.register('clients', ClientViewSet, basename='client')
 router.register('contact-messages', ContactMessageViewSet, basename='contactmessage')
+router.register('users', UserManagementViewSet, basename='usermanagement')
 
 
 urlpatterns = [

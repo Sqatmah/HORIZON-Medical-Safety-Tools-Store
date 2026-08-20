@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const menuItems = [
+const baseMenuItems = [
   { path: '/admin', label: 'لوحة التحكم', exact: true },
   { path: '/admin/products', label: 'المنتجات' },
   { path: '/admin/categories', label: 'التصنيفات' },
@@ -12,12 +13,15 @@ const menuItems = [
 
 export default function AdminLayout() {
   const location = useLocation();
+  const { user } = useAuth();
+  const menuItems = user?.is_super_admin_role
+    ? [...baseMenuItems, { path: '/admin/users', label: 'المستخدمون والصلاحيات' }]
+    : baseMenuItems;
 
   return (
-    <div className="min-h-screen flex" dir="rtl">
-      {/* الشريط الجانبي */}
+    <div className="min-h-screen flex">
       <aside className="w-64 bg-gray-900 text-gray-300 flex-shrink-0">
-                <div className="p-6 text-xl font-bold text-white border-b border-gray-800">
+        <div className="p-6 text-xl font-bold text-white border-b border-gray-800">
           Tech Innovation - إدارة
         </div>
         <nav className="p-4 space-y-1">
@@ -45,7 +49,6 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* المحتوى */}
       <main className="flex-1 bg-gray-50 p-8 overflow-auto">
         <Outlet />
       </main>

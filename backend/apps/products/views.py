@@ -5,11 +5,13 @@ from rest_framework.response import Response
 from django.db import models
 from .models import Product, ProductImage
 from .serializers import ProductSerializer, ProductImageSerializer
+from apps.core.permissions import IsAdminOrSuperAdmin
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     parser_classes = [JSONParser, MultiPartParser, FormParser]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get_queryset(self):
         qs = Product.objects.all()

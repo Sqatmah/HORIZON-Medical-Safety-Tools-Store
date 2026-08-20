@@ -1,3 +1,4 @@
+from apps.core.permissions import IsAdminOrSuperAdmin
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,7 +23,7 @@ class IsAdminOnly(permissions.BasePermission):
 
 class BannerViewSet(viewsets.ModelViewSet):
     serializer_class = BannerSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get_queryset(self):
         qs = Banner.objects.all()
@@ -34,7 +35,7 @@ class BannerViewSet(viewsets.ModelViewSet):
 
 class StaticPageViewSet(viewsets.ModelViewSet):
     serializer_class = StaticPageSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get_queryset(self):
         qs = StaticPage.objects.all()
@@ -52,7 +53,7 @@ class SiteSettingViewSet(viewsets.ModelViewSet):
 
 class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get_queryset(self):
         qs = Client.objects.all()
