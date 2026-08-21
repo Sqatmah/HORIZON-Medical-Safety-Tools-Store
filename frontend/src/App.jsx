@@ -26,6 +26,7 @@ import Contact from './pages/Contact';
 import AdminBanners from './pages/admin/AdminBanners';
 import AdminCatalog from './pages/admin/AdminCatalog';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminReports from './pages/admin/AdminReports';
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
                 <Route path="footer" element={<AdminFooterSettings />} />
                 <Route path="banners" element={<AdminBanners />} />
                 <Route path="catalog" element={<AdminCatalog />} />
+                <Route path="reports" element={<AdminReports />} />
                 <Route
                   path="users"
                   element={

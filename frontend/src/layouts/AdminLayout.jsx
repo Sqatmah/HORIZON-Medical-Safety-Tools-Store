@@ -9,6 +9,7 @@ const baseMenuItems = [
   { path: '/admin/footer', label: 'إعدادات الفوتر' },
   { path: '/admin/banners', label: 'البانرات' },
   { path: '/admin/catalog', label: 'الكتالوج' },
+  { path: '/admin/reports', label: 'التقارير' },
 ];
 
 export default function AdminLayout() {
