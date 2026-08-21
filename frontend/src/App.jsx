@@ -27,6 +27,8 @@ import AdminBanners from './pages/admin/AdminBanners';
 import AdminCatalog from './pages/admin/AdminCatalog';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminReports from './pages/admin/AdminReports';
+import AdminCorrespondence from './pages/admin/AdminCorrespondence';
+import AdminLogs from './pages/admin/AdminLogs';
 
 function App() {
   return (
@@ -66,6 +68,8 @@ function App() {
                 <Route path="banners" element={<AdminBanners />} />
                 <Route path="catalog" element={<AdminCatalog />} />
                 <Route path="reports" element={<AdminReports />} />
+                <Route path="correspondence" element={<SuperAdminRoute><AdminCorrespondence /></SuperAdminRoute>} />
+                <Route path="logs" element={<SuperAdminRoute><AdminLogs /></SuperAdminRoute>} />
                 <Route
                   path="users"
                   element={

@@ -5,6 +5,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from .models import Order
 from .serializers import OrderSerializer
+from apps.core.logging_utils import log_activity
 
 
 class OrderPermission(permissions.BasePermission):
@@ -40,6 +41,10 @@ class OrderViewSet(viewsets.ModelViewSet):
                 'tracking_number': order.tracking_number,
             }}
         )
+
+    def perform_destroy(self, instance):
+        log_activity(self.request.user, 'حذف طلب نهائيًا', f'رقم الطلب: {instance.order_number}', self.request)
+        instance.delete()
 
 
 class TrackOrderView(APIView):

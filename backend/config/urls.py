@@ -18,6 +18,8 @@ from apps.users.views import RegisterView, VerifyOtpView, MeView
 from apps.users.views import RegisterView, VerifyOtpView, MeView, UserManagementViewSet
 from apps.orders.reports import SalesReportView, ProductsReportView, CustomersReportView, OrdersReportView
 from apps.orders.excel_export import ExportExcelView
+from apps.correspondence.views import CorrespondenceViewSet
+from apps.core.views import ActivityLogViewSet, ExportLogsView
 
 
 
@@ -41,6 +43,8 @@ router.register('settings', SiteSettingViewSet, basename='setting')
 router.register('clients', ClientViewSet, basename='client')
 router.register('contact-messages', ContactMessageViewSet, basename='contactmessage')
 router.register('users', UserManagementViewSet, basename='usermanagement')
+router.register('correspondence', CorrespondenceViewSet, basename='correspondence')
+router.register('logs', ActivityLogViewSet, basename='activitylog')
 
 
 urlpatterns = [
@@ -62,6 +66,7 @@ urlpatterns = [
     path('api/reports/export/<str:report_type>/', ExportExcelView.as_view(), name='report-export'),
     path('api/track-visit/', TrackVisitView.as_view(), name='track-visit'),
     path('api/visitor-stats/', VisitorStatsView.as_view(), name='visitor-stats'),
+    path('api/logs/export/', ExportLogsView.as_view(), name='logs-export'),
 ]
 
 if settings.DEBUG:

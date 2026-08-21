@@ -21,6 +21,12 @@ export const translations = {
     newsletterSubtitle: 'اشترك لأحدث العروض والتحديثات',
     subscribe: 'اشترك',
     emailPlaceholder: 'أدخل بريدك الإلكتروني',
+    productsPage: 'المنتجات',
+    filterTitle: 'التصفية',
+    allCategories: 'الكل',
+    addToCart: 'أضف إلى السلة',
+    outOfStock: 'غير متوفر',
+    inStock: 'متوفر',
   },
   en: {
     home: 'Home',
@@ -44,6 +50,12 @@ export const translations = {
     newsletterSubtitle: 'Subscribe for the latest offers and updates',
     subscribe: 'Subscribe',
     emailPlaceholder: 'Enter your email',
+    productsPage: 'Products',
+    filterTitle: 'Filter',
+    allCategories: 'All',
+    addToCart: 'Add to Cart',
+    outOfStock: 'Out of Stock',
+    inStock: 'In Stock',
   },
 };
 

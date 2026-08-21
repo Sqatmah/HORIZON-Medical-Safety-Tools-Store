@@ -5,6 +5,7 @@ import apiClient from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
 import { useTranslation } from '../lib/translations';
 import StarRating from '../components/StarRating';
+import ProductCard from '../components/ProductCard';
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
@@ -136,17 +137,22 @@ export default function Home() {
                 />
               )}
               <div className="absolute inset-0 bg-brand-primary/50" />
-              <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex flex-col items-center justify-center text-center text-white">
+                            <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex flex-col items-center justify-center text-center text-white">
+                <span className="bg-white/15 backdrop-blur-sm border border-white/30 text-white text-xs px-4 py-1.5 rounded-full mb-4 flex items-center gap-1">
+                  ✓ معتمد SFDA & SASO
+                </span>
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">{banner.title_ar}</h1>
                 {banner.subtitle_ar && (
                   <p className="text-lg text-gray-100 mb-8 max-w-2xl mx-auto">{banner.subtitle_ar}</p>
                 )}
-                <Link
-                  to={banner.link || '/products'}
-                  className="bg-white text-brand-primary font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition inline-block"
-                >
-                  تصفّح المنتجات
-                </Link>
+                                <div className="flex gap-3">
+                  <Link to="/category" className="border border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition">
+                    استكشف الفئات
+                  </Link>
+                  <Link to={banner.link || '/products'} className="bg-gradient-to-l from-brand-primary to-brand-accent text-white font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition inline-flex items-center gap-2">
+                    ← تسوق الآن
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

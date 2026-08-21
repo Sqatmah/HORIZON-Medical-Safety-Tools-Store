@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Product, Category } from '../api/entities';
-import StarRating from '../components/StarRating';
+import ProductCard from '../components/ProductCard';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -9,15 +9,14 @@ export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [loading, setLoading] = useState(true);
   const [ordering, setOrdering] = useState('');
+  const [viewMode, setViewMode] = useState('grid');
+  const [loading, setLoading] = useState(true);
 
-  // جيب التصنيفات مرة وحدة بس عند فتح الصفحة
   useEffect(() => {
     Category.list().then(setCategories).catch(console.error);
   }, []);
 
-  // جيب المنتجات كل ما تغيّر الفلتر أو البحث
   useEffect(() => {
     setLoading(true);
     const params = {};
@@ -31,81 +30,106 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, [selectedCategory, search, ordering]);
 
+  const selectCategory = (id) => {
+    setSelectedCategory(id);
+    setSearchParams(id ? { category: id } : {});
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">جميع المنتجات</h1>
+      <h1 className="text-3xl font-bold text-brand-primary mb-1">المنتجات</h1>
+      <p className="text-gray-500 mb-6">عرض {products.length} منتج</p>
 
-       {/* شريط البحث والفلترة */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <input
-          type="text"
-          placeholder="ابحث عن منتج..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border rounded-lg px-4 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-teal-500"
-        />
-        <select
-          value={selectedCategory}
-          onChange={(e) => {
-            setSelectedCategory(e.target.value);
-            setSearchParams(e.target.value ? { category: e.target.value } : {});
-          }}
-          className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-        >
-          <option value="">كل التصنيفات</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name_ar}</option>
-          ))}
-        </select>
+      {/* شريط الأدوات */}
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+        <div className="flex border rounded-lg overflow-hidden">
+          <button
+            onClick={() => setViewMode('list')}
+            className={`px-3 py-2 ${viewMode === 'list' ? 'bg-brand-primary text-white' : 'bg-white text-gray-500'}`}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setViewMode('grid')}
+            className={`px-3 py-2 ${viewMode === 'grid' ? 'bg-brand-primary text-white' : 'bg-white text-gray-500'}`}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h4v4H4V6zm6 0h4v4h-4V6zm6 0h4v4h-4V6zM4 14h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z" />
+            </svg>
+          </button>
+        </div>
+
         <select
           value={ordering}
           onChange={(e) => setOrdering(e.target.value)}
-          className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent"
         >
-          <option value="">الترتيب الافتراضي</option>
+          <option value="">الأحدث</option>
           <option value="price">السعر: من الأرخص للأغلى</option>
           <option value="-price">السعر: من الأغلى للأرخص</option>
         </select>
+
+        <input
+          type="text"
+          placeholder="ابحث عن المنتجات..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border rounded-lg px-4 py-2 flex-1 min-w-[200px] text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent"
+        />
       </div>
 
-      {/* عرض المنتجات */}
-      {loading ? (
-        <p className="text-center text-gray-500 py-10">جاري التحميل...</p>
-      ) : products.length === 0 ? (
-        <p className="text-center text-gray-500 py-10">لا توجد منتجات مطابقة</p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              className="product-card bg-white rounded-xl shadow p-4 block"
-            >
-              <div className="bg-gray-100 rounded-lg h-40 mb-3 flex items-center justify-center overflow-hidden">
-                {product.images && product.images.length > 0 ? (
-                  <img
-                    src={product.images[0].image}
-                    alt={product.name_ar}
-                    className="product-card-image w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-gray-400 text-sm">لا توجد صورة</span>
-                )}
-              </div>
-              <h2 className="font-semibold text-gray-800 truncate">{product.name_ar}</h2>
-              {product.rating_avg > 0 && (
-                <div className="flex items-center gap-1 mt-1">
-                  <StarRating rating={product.rating_avg} size="text-xs" />
-                  {product.quantity_sold > 0 && (
-                    <span className="text-gray-400 text-xs">({product.quantity_sold})</span>
-                  )}
-                </div>
-              )}
-              <p className="text-teal-600 font-bold mt-2">{product.price} ريال</p>
-            </Link>
-          ))}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* الشريط الجانبي */}
+        <aside className="lg:col-span-1 order-2 lg:order-1">
+          <div className="bg-white rounded-xl shadow p-5">
+            <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              التصفية
+            </h3>
+            <p className="text-sm text-gray-500 mb-2">الفئات</p>
+            <div className="space-y-1">
+              <button
+                onClick={() => selectCategory('')}
+                className={`w-full text-right px-3 py-2 rounded-lg text-sm transition ${
+                  !selectedCategory ? 'bg-brand-primary text-white' : 'hover:bg-gray-50 text-gray-600'
+                }`}
+              >
+                الكل
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => selectCategory(String(cat.id))}
+                  className={`w-full text-right px-3 py-2 rounded-lg text-sm transition ${
+                    selectedCategory === String(cat.id) ? 'bg-brand-primary text-white' : 'hover:bg-gray-50 text-gray-600'
+                  }`}
+                >
+                  {cat.name_ar}
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        {/* المنتجات */}
+        <div className="lg:col-span-3 order-1 lg:order-2">
+          {loading ? (
+            <p className="text-center text-gray-500 py-10">جاري التحميل...</p>
+          ) : products.length === 0 ? (
+            <p className="text-center text-gray-500 py-10">لا توجد منتجات مطابقة</p>
+          ) : (
+            <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6' : 'flex flex-col gap-4'}>
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

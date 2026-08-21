@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.cms',
     'apps.ai_assistant',
+    'apps.correspondence',
+    'apps.core',
 ]
 
 MIDDLEWARE = [

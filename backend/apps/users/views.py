@@ -1,3 +1,4 @@
+from apps.core.logging_utils import log_activity
 import random
 from django.core.mail import send_mail
 from django.core.cache import cache
@@ -16,6 +17,7 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save(is_active=True)
+        log_activity(None, 'تسجيل حساب جديد', f'المستخدم: {user.username} ({user.email})', request)
 
         otp = str(random.randint(100000, 999999))
         cache.set(f'otp_{user.email}', otp, timeout=600)  # صالح 10 دقايق
@@ -47,6 +49,7 @@ class VerifyOtpView(APIView):
         cache.delete(f'otp_{email}')
 
         refresh = RefreshToken.for_user(user)
+        log_activity(user, 'تسجيل دخول (تحقق OTP)', '', request)
         return Response({
             'access': str(refresh.access_token),
             'refresh': str(refresh),
