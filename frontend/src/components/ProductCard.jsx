@@ -35,9 +35,9 @@ export default function ProductCard({ product }) {
         )}
       </div>
 
-      <div className="bg-gray-100 rounded-lg h-40 mb-3 flex items-center justify-center overflow-hidden">
+            <div className="bg-gray-100 rounded-lg h-40 mb-3 flex items-center justify-center overflow-hidden">
         {product.images?.length > 0 ? (
-          <img src={product.images[0].image} alt={product.name_ar} className="product-card-image w-full h-full object-cover" />
+          <img src={product.images[0].image} alt={product.name_ar} className="product-card-image w-full h-full object-contain p-2" />
         ) : (
           <span className="text-gray-400 text-sm">لا توجد صورة</span>
         )}

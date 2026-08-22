@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -41,3 +41,12 @@ class ExportLogsView(APIView):
         response['Content-Disposition'] = 'attachment; filename=activity_logs.xlsx'
         wb.save(response)
         return response
+
+class RecentActivityView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if not getattr(request.user, 'is_admin_role', False):
+            return Response({'error': 'غير مصرح'}, status=403)
+        logs = ActivityLog.objects.all()[:20]
+        return Response(ActivityLogSerializer(logs, many=True).data)

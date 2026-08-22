@@ -2,6 +2,7 @@ from decimal import Decimal
 from rest_framework import serializers
 from .models import Order
 from apps.products.models import Product
+from apps.core.logging_utils import log_activity
 
 VAT_RATE = Decimal('0.15')  # 15%
 
@@ -51,4 +52,6 @@ class OrderSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             validated_data['user'] = request.user
 
-        return super().create(validated_data)
+        order = super().create(validated_data)
+        log_activity(order.user, 'طلب جديد', f'رقم الطلب: {order.order_number} - {order.total} ريال')
+        return order
