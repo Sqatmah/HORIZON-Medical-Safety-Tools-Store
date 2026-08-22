@@ -2,8 +2,12 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import StarRating from './StarRating';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from '../lib/translations';
 
 export default function ProductCard({ product }) {
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -28,10 +32,10 @@ export default function ProductCard({ product }) {
           <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">-{discountPercent}%</span>
         )}
         {product.is_best_seller && (
-          <span className="bg-orange-400 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">★ الأكثر مبيعًا</span>
+          <span className="bg-orange-400 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">★ {t('bestSeller')}</span>
         )}
         {product.is_new_arrival && (
-          <span className="bg-brand-accent text-white text-xs font-bold px-2 py-1 rounded-md">جديد</span>
+          <span className="bg-brand-accent text-white text-xs font-bold px-2 py-1 rounded-md">{t('newBadge')}</span>
         )}
       </div>
 
@@ -43,7 +47,7 @@ export default function ProductCard({ product }) {
         )}
       </div>
 
-      <h2 className="font-semibold text-gray-800 truncate">{product.name_ar}</h2>
+        <h2 className="font-semibold text-gray-800 truncate">{language === 'ar' ? product.name_ar : (product.name_en || product.name_ar)}</h2>
 
       {product.rating_avg > 0 && (
         <div className="flex items-center gap-1 mt-1">
@@ -52,17 +56,17 @@ export default function ProductCard({ product }) {
         </div>
       )}
       {product.quantity_sold > 0 && (
-        <p className="text-gray-400 text-xs mt-0.5">تم بيعه {product.quantity_sold}</p>
+        <p className="text-gray-400 text-xs mt-0.5">{t('soldCount')} {product.quantity_sold}</p>
       )}
 
       <div className="flex items-center gap-2 mt-2">
         {hasDiscount ? (
           <>
-            <span className="text-teal-600 font-bold">{product.discount_price} ر.س</span>
-            <span className="text-gray-400 text-sm line-through">{product.price} ر.س</span>
+            <span className="text-teal-600 font-bold">{product.discount_price} {t('riyal')}</span>
+            <span className="text-gray-400 text-sm line-through">{product.price} {t('riyal')}</span>
           </>
         ) : (
-          <span className="text-teal-600 font-bold">{product.price} ر.س</span>
+          <span className="text-teal-600 font-bold">{product.price} {t('riyal')}</span>
         )}
       </div>
 
@@ -74,7 +78,7 @@ export default function ProductCard({ product }) {
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
-        {added ? '✓ تمت الإضافة' : product.stock === 0 ? 'غير متوفر' : 'أضف إلى السلة'}
+                {added ? `✓ ${t('addedToCart')}` : product.stock === 0 ? t('outOfStock') : t('addToCart')}
       </button>
     </Link>
   );

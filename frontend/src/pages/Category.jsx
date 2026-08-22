@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Category } from '../api/entities';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CategoryPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
 
   useEffect(() => {
     Category.list()
@@ -14,8 +16,8 @@ export default function CategoryPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-brand-primary mb-1">فئاتنا</h1>
-      <p className="text-gray-500 mb-8">تصفح فئاتنا الرئيسية للمنتجات</p>
+      <h1 className="text-3xl font-bold text-brand-primary mb-1">{language === 'ar' ? 'فئاتنا' : 'Our Categories'}</h1>
+      <p className="text-gray-500 mb-8">{language === 'ar' ? 'تصفح فئاتنا الرئيسية للمنتجات' : 'Browse our main product categories'}</p>
 
       {loading ? (
         <p className="text-gray-500">جاري التحميل...</p>
@@ -38,12 +40,12 @@ export default function CategoryPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/85 via-brand-primary/20 to-transparent" />
 
               <div className="absolute bottom-0 right-0 p-7 text-white text-right w-full">
-                <h3 className="text-2xl font-bold mb-2">{cat.name_ar}</h3>
-                {cat.description_ar && (
+                                <h3 className="text-2xl font-bold mb-2">{language === 'ar' ? cat.name_ar : (cat.name_en || cat.name_ar)}</h3>
+                {cat.description_ar && language === 'ar' && (
                   <p className="text-gray-200 text-sm mb-4">{cat.description_ar}</p>
                 )}
                 <span className="inline-flex items-center gap-1 text-brand-accent text-xs font-semibold">
-                  تسوق الآن
+                  {language === 'ar' ? 'تسوق الآن' : 'Shop Now'}
                   <svg className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>

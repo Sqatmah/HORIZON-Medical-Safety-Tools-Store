@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Product, Category } from '../api/entities';
 import ProductCard from '../components/ProductCard';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from '../lib/translations';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -12,6 +14,8 @@ export default function Products() {
   const [ordering, setOrdering] = useState('');
   const [viewMode, setViewMode] = useState('grid');
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
+  const t = useTranslation(language);
 
   useEffect(() => {
     Category.list().then(setCategories).catch(console.error);
@@ -37,9 +41,8 @@ export default function Products() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-brand-primary mb-1">المنتجات</h1>
-      <p className="text-gray-500 mb-6">عرض {products.length} منتج</p>
-
+      <h1 className="text-3xl font-bold text-brand-primary mb-1">{t('productsTitle')}</h1>
+      <p className="text-gray-500 mb-6">{t('productsCount')} {products.length} {t('productItem')}</p>
       {/* شريط الأدوات */}
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <div className="flex border rounded-lg overflow-hidden">
@@ -61,19 +64,19 @@ export default function Products() {
           </button>
         </div>
 
-        <select
+          <select
           value={ordering}
           onChange={(e) => setOrdering(e.target.value)}
           className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent"
         >
-          <option value="">الأحدث</option>
-          <option value="price">السعر: من الأرخص للأغلى</option>
-          <option value="-price">السعر: من الأغلى للأرخص</option>
+          <option value="">{t('sortDefault')}</option>
+          <option value="price">{t('sortPriceLowHigh')}</option>
+          <option value="-price">{t('sortPriceHighLow')}</option>
         </select>
 
         <input
           type="text"
-          placeholder="ابحث عن المنتجات..."
+          placeholder={t('searchProducts')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="border rounded-lg px-4 py-2 flex-1 min-w-[200px] text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent"
@@ -84,7 +87,7 @@ export default function Products() {
         {/* الشريط الجانبي */}
         <aside className="lg:col-span-1 order-2 lg:order-1">
           <div className="bg-white rounded-xl shadow p-5">
-            <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
@@ -117,10 +120,10 @@ export default function Products() {
 
         {/* المنتجات */}
         <div className="lg:col-span-3 order-1 lg:order-2">
-          {loading ? (
-            <p className="text-center text-gray-500 py-10">جاري التحميل...</p>
+            {loading ? (
+            <p className="text-center text-gray-500 py-10">{t('loadingText')}</p>
           ) : products.length === 0 ? (
-            <p className="text-center text-gray-500 py-10">لا توجد منتجات مطابقة</p>
+            <p className="text-center text-gray-500 py-10">{t('noProductsFound')}</p>
           ) : (
             <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6' : 'flex flex-col gap-4'}>
               {products.map((product) => (

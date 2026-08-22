@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import apiClient from '../api/client';
 import logo from '../assets/logo.png';
+import { useLanguage } from '../context/LanguageContext';
+import { useTranslation } from '../lib/translations';
 
 const DEFAULT_FOOTER = {
   about_text: 'مؤسسة الابتكار التقني هي مؤسسة متخصصة في توريد المعدات الطبية ومعدات السلامة المعتمدة في جميع أنحاء المملكة العربية السعودية.',
@@ -18,6 +20,8 @@ const DEFAULT_FOOTER = {
 
 export default function Footer() {
   const [footer, setFooter] = useState(DEFAULT_FOOTER);
+  const { language } = useLanguage();
+  const t = useTranslation(language);
 
   useEffect(() => {
     apiClient.get('/footer-settings/')
@@ -36,18 +40,18 @@ export default function Footer() {
     <footer className="bg-brand-primary text-gray-300 mt-16">
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-right">
-            <h3 className="text-white font-bold">النشرة الإخبارية</h3>
-            <p className="text-sm text-gray-400">اشترك لأحدث العروض والتحديثات</p>
+                    <div className="text-right">
+            <h3 className="text-white font-bold">{t('newsletter')}</h3>
+            <p className="text-sm text-gray-400">{t('newsletterSubtitle')}</p>
           </div>
           <div className="flex gap-2 w-full md:w-auto">
             <input
               type="email"
-              placeholder="أدخل بريدك الإلكتروني"
+              placeholder={t('emailPlaceholder')}
               className="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm flex-1 md:w-64 focus:outline-none"
             />
             <button className="bg-teal-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-teal-600 whitespace-nowrap">
-              اشترك
+              {t('subscribe')}
             </button>
           </div>
         </div>
@@ -58,31 +62,31 @@ export default function Footer() {
           <div className="flex items-center gap-2 mb-4 justify-end">
             <img src={logo} alt="Tech Innovation" className="h-10 w-auto bg-white rounded-lg p-1" />
           </div>
-          <p className="text-sm leading-relaxed text-gray-400">{footer.about_text}</p>
+                    <p className="text-sm leading-relaxed text-gray-400">{footer.about_text || t('footerAbout')}</p>
         </div>
 
         <div>
-          <h3 className="text-white font-bold mb-4">روابط سريعة</h3>
+          <h3 className="text-white font-bold mb-4">{t('footerQuickLinks')}</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-teal-400">الرئيسية</Link></li>
-            <li><Link to="/products" className="hover:text-teal-400">المنتجات</Link></li>
-            <li><Link to="/page/about" className="hover:text-teal-400">من نحن</Link></li>
-            <li><Link to="/page/contact" className="hover:text-teal-400">اتصل بنا</Link></li>
+            <li><Link to="/" className="hover:text-teal-400">{t('home')}</Link></li>
+            <li><Link to="/products" className="hover:text-teal-400">{t('products')}</Link></li>
+            <li><Link to="/page/about" className="hover:text-teal-400">{t('aboutUs')}</Link></li>
+            <li><Link to="/page/contact" className="hover:text-teal-400">{t('contactUs')}</Link></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-white font-bold mb-4">خدمة العملاء</h3>
+          <h3 className="text-white font-bold mb-4">{t('footerCustomerService')}</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/track-order" className="hover:text-teal-400">تتبعي</Link></li>
-            <li><Link to="/page/privacy" className="hover:text-teal-400">سياسة الخصوصية</Link></li>
-            <li><Link to="/page/terms" className="hover:text-teal-400">الشروط والأحكام</Link></li>
-            <li><Link to="/page/shipping-policy" className="hover:text-teal-400">سياسة الشحن والإرجاع</Link></li>
+            <li><Link to="/track-order" className="hover:text-teal-400">{t('footerTrackOrder')}</Link></li>
+            <li><Link to="/page/privacy" className="hover:text-teal-400">{t('footerPrivacy')}</Link></li>
+            <li><Link to="/page/terms" className="hover:text-teal-400">{t('footerTerms')}</Link></li>
+            <li><Link to="/page/shipping-policy" className="hover:text-teal-400">{t('footerShipping')}</Link></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-white font-bold mb-4">اتصل بنا</h3>
+          <h3 className="text-white font-bold mb-4">{t('footerContactUs')}</h3>
           <ul className="space-y-3 text-sm">
             <li className="flex items-center gap-2 justify-end">
               <span>{footer.address}</span>
